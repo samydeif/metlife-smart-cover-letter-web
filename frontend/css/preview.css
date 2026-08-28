@@ -1,0 +1,407 @@
+/* ==========================================================================
+   preview.css
+   Right-hand live preview: A4 "paper" surface rendering the cover letter.
+   ========================================================================== */
+
+.preview-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.preview-toolbar__zoom {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  background: var(--ml-surface-alt);
+  border: 1px solid var(--ml-border);
+  border-radius: var(--radius-full);
+  padding: 2px;
+}
+
+.preview-toolbar__zoom-btn {
+  width: 26px;
+  height: 26px;
+  border: none;
+  background: transparent;
+  border-radius: 50%;
+  color: var(--ml-text-600);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-md);
+  line-height: 1;
+}
+
+.preview-toolbar__zoom-btn:hover {
+  background: var(--ml-surface);
+  color: var(--ml-navy-900);
+}
+
+.preview-toolbar__zoom-value {
+  font-size: var(--fs-xs);
+  color: var(--ml-text-600);
+  min-width: 38px;
+  text-align: center;
+}
+
+.preview-toolbar__fit-btn {
+  font-size: var(--fs-xs);
+  color: var(--ml-teal-500);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0 var(--sp-2);
+  font-weight: var(--fw-medium);
+}
+
+.preview-toolbar__fit-btn:hover {
+  text-decoration: underline;
+}
+
+/* -- Preview stage: scroll container that centers the paper -- */
+.preview-stage {
+  flex: 1 1 0;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+  background: var(--ml-surface-alt);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: var(--sp-6);
+}
+
+/* When the scaled paper fits comfortably, center it vertically too —
+   this is what makes it read as "a real sheet of paper on a desk"
+   instead of a page pinned to the top of a scroll area. */
+.preview-stage[data-fits="true"] {
+  align-items: center;
+}
+
+/* -- The "paper" — fixed A4 size, scaled with the CSS `zoom` property
+      (not `transform: scale`) so its layout box shrinks/grows with it
+      and the stage never reserves phantom scroll space. -- */
+.paper {
+  width: var(--paper-w);
+  min-height: var(--paper-h);
+  background: #FFFFFF;
+  box-shadow: var(--shadow-lg);
+  border-radius: 2px;
+  flex: 0 0 auto;
+  padding: 56px 60px;
+  position: relative;
+  color: #1A1A1A;
+}
+
+/* -- Empty state, shown before any data is entered -- */
+.preview-empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-3);
+  text-align: center;
+  padding: var(--sp-8);
+}
+
+.preview-empty[hidden] {
+  display: none !important;
+}
+
+.preview-empty__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: var(--ml-info-bg);
+  color: var(--ml-teal-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-xl);
+  margin-bottom: var(--sp-2);
+}
+
+.preview-empty__title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--ml-navy-900);
+}
+
+.preview-empty__body {
+  font-size: var(--fs-sm);
+  color: var(--ml-text-400);
+  max-width: 320px;
+  line-height: 1.6;
+}
+
+/* -- Cover letter internal layout --
+      Structure and spacing below are modeled directly on the official
+      empty template: logo + address header with no rule line under it,
+      a centered greeting line between two right-aligned salutation
+      lines, a label/colon/value table for the policy identifiers, and a
+      notes block that reserves the template's blank space even when
+      empty. -- */
+/* ==========================================================================
+   REPLACED WITH A SINGLE IMAGE BANNER — the header used to be built from a
+   flex row (a logo mark + an English address text block, hand-styled with
+   CSS). Per the real letter's actual appearance (the header/footer are
+   graphics in the original .oft template, not styled text), this is now
+   one full-width image spanning the paper's content column. The old
+   flex/logo/address rules are kept below, commented out, only as a
+   reference in case a future revision needs to go back to a coded
+   header instead of an image.
+   ========================================================================== */
+.cl-header {
+  margin-bottom: 28px;
+}
+
+.cl-header__banner {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* --- superseded rules, kept for reference only ---
+.cl-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 36px;
+}
+
+.cl-header__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cl-header__logo-mark {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.cl-header__logo-mark--fallback {
+  background: linear-gradient(135deg, var(--ml-navy-700), var(--ml-teal-500));
+}
+
+.cl-header__logo-text {
+  font-size: 19px;
+  font-weight: var(--fw-bold);
+  color: var(--ml-navy-900);
+  letter-spacing: -0.01em;
+}
+
+.cl-header__address {
+  text-align: end;
+  font-size: 10px;
+  line-height: 1.7;
+  color: #444;
+  direction: ltr;
+  font-family: var(--font-arabic);
+}
+--- end superseded rules --- */
+
+/* -- Arabic body: right-aligned, generous leading, RTL word/letter
+      spacing tuned so it reads like typeset Arabic rather than a
+      web-default RTL block. -- */
+.cl-body {
+  direction: rtl;
+  text-align: right;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 2.1;
+  color: #1A1A1A;
+  word-spacing: 1px;
+}
+
+.cl-line {
+  margin-bottom: 14px;
+}
+
+/* The greeting line ("تحية طيبة و بعد") sits centered between the two
+   right-aligned salutation lines in the reference, rather than sharing
+   their right margin. */
+.cl-line--center {
+  text-align: center;
+}
+
+.cl-line--placeholder {
+  color: #1A1A1A;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.cl-table {
+  margin: 16px 0;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cl-table td {
+  padding: 4px 0;
+  font-size: 15px;
+  font-family: Arial, sans-serif;
+  font-weight: 700;
+  vertical-align: top;
+}
+
+.cl-table td.cl-table__label {
+  width: 17%;
+  color: #1A1A1A;
+  font-weight: var(--fw-semibold);
+}
+
+.cl-table td.cl-table__colon {
+  width: 4%;
+  text-align: center;
+  
+}
+
+.cl-table td.cl-table__value {
+  color: #1A1A1A;
+  font-weight: var(--fw-bold);
+  /* Policy numbers and codes like "IBS - METLIFE" are their own bidi
+     run — isolating + forcing LTR keeps digits/hyphens in source order
+     regardless of the surrounding RTL paragraph, and word-break keeps an
+     unusually long company name from ever breaking the table layout. */
+  unicode-bidi: isolate;
+  direction: ltr;
+  text-align: right;
+  word-break: break-word;
+}
+
+.cl-note {
+  margin-top: 18px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 2;
+}
+
+.cl-note__label {
+  text-decoration: underline;
+  font-weight: var(--fw-bold);
+}
+
+/* Reserves the same blank space the official template leaves under
+   "ملحوظة هامة :" when there is no note (req. #20), while letting long
+   notes grow past that minimum without overlapping the disclaimer below
+   (req. #19). */
+.cl-note__body {
+  margin-top: 8px;
+  min-height: 150px;
+}
+
+.cl-disclaimer {
+  margin-top: 30px;
+  font-family: Arial, sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.9;
+  text-decoration: underline;
+  color: #333;
+}
+
+/* ==========================================================
+   METLIFE CLAIMS STAMP
+   Uses the original stamp artwork supplied by the admin.
+   The date remains dynamic and is overlaid separately.
+========================================================== */
+
+.cl-stamp {
+  position: relative;
+
+  margin-top:20px;
+  margin-left:35%;
+
+  width: 190px;
+  height: 95px;
+
+  font-family: Arial, sans-serif;
+
+  box-sizing: border-box;
+}
+
+.cl-stamp__image {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  display: block;
+
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Dynamic date generated by stamp.js */
+.cl-stamp__date {
+  position: absolute;
+
+  left: 50%;
+  top: 57%;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 2;
+
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+
+  color: #b83b32;
+
+  white-space: nowrap;
+
+  margin: 0;
+}
+
+
+/* ==========================================================================
+   REPLACED WITH A SINGLE IMAGE BANNER — same reasoning as .cl-header
+   above: the footer is now one full-width image (the actual legal-text
+   graphic from the original letter) instead of hand-styled Arabic text.
+   The old text-styling rules are kept below, commented out, for
+   reference only.
+   ========================================================================== */
+.cl-footer {
+  position: absolute;
+  bottom: 90px;
+  inset-inline: 60px;
+  border-top: 1px solid var(--ml-border);
+  padding-top: 10px;
+}
+
+.cl-footer__banner {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* --- superseded rules, kept for reference only ---
+.cl-footer {
+  position: absolute;
+  bottom: 90px;
+  inset-inline: 60px;
+  font-size: 9px;
+  line-height: 1.8;
+  color: #888;
+  text-align: center;
+  direction: rtl;
+  font-family: var(--font-arabic);
+  border-top: 1px solid var(--ml-border);
+  padding-top: 10px;
+  font-family: Arial, sans-serif;
+}
+--- end superseded rules --- */

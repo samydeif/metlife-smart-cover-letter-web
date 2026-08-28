@@ -1,0 +1,95 @@
+/* ==========================================================================
+   variables.css
+   Design tokens for MetLife Smart Cover Letter.
+   Every color, spacing, radius, shadow and font used in the app should be
+   referenced from here — no magic values in the component stylesheets.
+   ========================================================================== */
+
+:root {
+  /* ---- Brand color ---- */
+  --ml-navy-900: #0A2A5E;   /* deepest brand navy — headers, primary text on light */
+  --ml-navy-700: #123C82;   /* primary brand blue — buttons, active states */
+  --ml-navy-600: #1B4FA0;   /* hover / secondary blue */
+  --ml-teal-500: #00A9CE;   /* MetLife teal accent — links, highlights, focus */
+  --ml-teal-100: #E3F6FB;   /* pale teal tint — badges, hover backgrounds */
+
+  /* ---- Neutrals ---- */
+  --ml-bg: #F3F5F9;          /* app background */
+  --ml-surface: #FFFFFF;     /* card / panel surface */
+  --ml-surface-alt: #F8FAFC; /* subtle alternate surface (input fields, etc.) */
+  --ml-border: #E1E6EF;      /* hairline borders */
+  --ml-border-strong: #C7D0E0;
+
+  --ml-text-900: #1A2233;    /* primary text */
+  --ml-text-600: #4B5568;    /* secondary text */
+  --ml-text-400: #8A93A6;    /* placeholder / disabled text */
+  --ml-text-on-brand: #FFFFFF;
+
+  /* ---- Semantic ---- */
+  --ml-success: #1C9A6C;
+  --ml-success-bg: #E7F8F1;
+  --ml-warning: #D98A1F;
+  --ml-warning-bg: #FBF1E1;
+  --ml-danger: #D64545;
+  --ml-danger-bg: #FBEAEA;
+  --ml-info: var(--ml-teal-500);
+  --ml-info-bg: var(--ml-teal-100);
+
+  /* ---- Typography ---- */
+  --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-arabic: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Consolas', monospace;
+
+  --fs-xs: 0.75rem;    /* 12px */
+  --fs-sm: 0.8125rem;  /* 13px */
+  --fs-base: 0.9375rem;/* 15px */
+  --fs-md: 1.0625rem;  /* 17px */
+  --fs-lg: 1.25rem;    /* 20px */
+  --fs-xl: 1.5rem;     /* 24px */
+  --fs-2xl: 1.875rem;  /* 30px */
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* ---- Spacing scale ---- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+
+  /* ---- Radius ---- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 999px;
+
+  /* ---- Shadow ---- */
+  --shadow-sm: 0 1px 2px rgba(16, 30, 64, 0.06);
+  --shadow-md: 0 4px 16px rgba(16, 30, 64, 0.08);
+  --shadow-lg: 0 20px 48px rgba(16, 30, 64, 0.16);
+  --shadow-focus: 0 0 0 3px rgba(0, 169, 206, 0.28);
+
+  /* ---- Motion ---- */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+
+  /* ---- Layout ---- */
+  --topbar-h: 60px;
+  --statusbar-h: 40px;
+  --panel-gap: 24px;
+  --form-panel-width: 30%;
+  --preview-panel-width: 70%;
+
+  /* ---- Paper (A4 @ 96dpi) ---- */
+  --paper-w: 794px;
+  --paper-h: 1123px;
+}

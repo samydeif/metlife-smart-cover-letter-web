@@ -1,0 +1,18 @@
+{
+  "name": "metlife-cover-letter-outlook-helper",
+  "version": "1.0.0",
+  "description": "Local Windows Helper — the ONLY part of the web migration that still needs Windows/COM privileges. Runs on each agent's own machine, listens on 127.0.0.1 only, and drives Outlook via the SAME PowerShell script the original Electron app used.",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "package": "echo \"Use electron-builder, pkg, or nexe to produce a Windows EXE from this folder — see README.md's 'Packaging the Helper' section.\""
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "dotenv": "^16.4.5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

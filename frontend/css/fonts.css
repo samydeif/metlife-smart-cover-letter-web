@@ -1,0 +1,64 @@
+/**
+ * css/fonts.css
+ * Self-hosted replacement for the Google Fonts CDN <link> the original
+ * Electron app's index.html used. See assets/fonts/README.md for the
+ * one manual step needed to finish this (the actual .woff2 files
+ * aren't included in this package — see that README for exactly why
+ * and how to add them).
+ *
+ * Loaded by index.html (browser preview) AND referenced by the
+ * backend's PDF print-document template over HTTP (see
+ * backend/pdf/renderer.js) — same file, same origin, so the same
+ * fonts back both the on-screen preview and the generated PDF.
+ */
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/Inter-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/Inter-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/Inter-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/Inter-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cairo';
+  src: url('../assets/fonts/Cairo-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cairo';
+  src: url('../assets/fonts/Cairo-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Cairo';
+  src: url('../assets/fonts/Cairo-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

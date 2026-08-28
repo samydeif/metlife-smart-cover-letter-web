@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MetLife Smart Cover Letter</title>
+
+  <!-- Fonts: Inter (UI) + Cairo (Arabic cover letter body) — self-hosted,
+       loaded locally. No fonts.googleapis.com / fonts.gstatic.com
+       anywhere in this file, per the internal/offline requirement. -->
+  <link rel="stylesheet" href="css/fonts.css" />
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/form.css" />
+  <link rel="stylesheet" href="css/preview.css" />
+  <link rel="stylesheet" href="css/buttons.css" />
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- ============================= TOP BAR ============================= -->
+    <header class="topbar">
+      <div class="topbar__brand">
+        <div class="topbar__logo-wrap">
+          <img
+              class="topbar__logo-img"
+              id="topbarLogoImg"
+              src="assets/images/metlife_logo.jpg"
+              alt="MetLife"
+             />
+        </div>
+        <div>
+          <span class="topbar__title" id="appTitleText">MetLife Smart Cover Letter</span>
+          <span class="topbar__subtitle">Customer Service Department · Internal Tool</span>
+        </div>
+      </div>
+      <div class="topbar__meta">
+        <span class="topbar__badge" id="agentBadge">Agent session</span>
+        <span class="topbar__badge" id="versionBadge">V1 · Web</span>
+        <span class="topbar__badge" id="helperStatusBadge" title="Local Outlook Helper connection status">Helper: checking…</span>
+      </div>
+    </header>
+
+    <!-- ============================ WORKSPACE ============================ -->
+    <main class="workspace">
+
+      <!-- ---------------------------- FORM PANEL --------------------------- -->
+      <section class="panel panel--form" aria-labelledby="formPanelTitle">
+        <div class="panel__header">
+          <div>
+            <div class="panel__eyebrow">Step 1</div>
+            <h2 class="panel__title" id="formPanelTitle">Customer details</h2>
+          </div>
+          <div class="mode-switch" role="tablist" aria-label="Entry mode">
+            <button class="mode-switch__btn" role="tab" id="modeTabPaste" aria-selected="false" aria-controls="pastePanel">
+              Quick Paste
+            </button>
+            <button class="mode-switch__btn" role="tab" id="modeTabManual" aria-selected="true" aria-controls="manualPanel">
+              Manual Entry
+            </button>
+          </div>
+        </div>
+
+        <div class="panel__body">
+
+          <div class="draft-banner" id="draftBanner" hidden>
+            <span>A saved draft was restored from your last session.</span>
+            <button class="btn btn--ghost btn--sm" id="dismissDraftBtn" type="button">Dismiss</button>
+          </div>
+
+          <!-- Quick paste mode -->
+          <div id="pastePanel" role="tabpanel" aria-labelledby="modeTabPaste" hidden>
+            <div class="form-section">
+              <div class="form-section__title">Paste customer record</div>
+              <p class="form-section__hint">
+                Paste the text copied from the GRP/CRT lookup system — Ctrl+V,
+                right-click paste, drag &amp; drop, or the button below all work.
+                Parse will extract every field automatically.
+              </p>
+              <textarea
+                class="paste-area"
+                id="pasteArea"
+                placeholder="Paste the copied customer record here…"
+                aria-label="Pasted customer record"
+              ></textarea>
+              <div class="paste-area__actions">
+                <span class="paste-area__count" id="pasteCount">0 characters</span>
+                <div class="paste-area__buttons">
+                  <button class="btn btn--secondary btn--sm" id="pasteClipboardBtn" type="button">
+                    Paste
+                  </button>
+                  <button class="btn btn--accent btn--sm" id="parseBtn" type="button">
+                    Parse
+                  </button>
+                </div>
+              </div>
+              <ul class="parse-report" id="parseReport" hidden></ul>
+            </div>
+          </div>
+
+          <!-- Manual entry mode -->
+          <div id="manualPanel" role="tabpanel" aria-labelledby="modeTabManual">
+            <form id="coverLetterForm" novalidate>
+
+              <div class="form-section">
+                <div class="form-section__title">Provider &amp; patient</div>
+
+                <div class="field field--full">
+                  <label class="field__label" for="providerInput">
+                    Provider <span class="field__required">*</span>
+                  </label>
+                  <input
+                    class="field__control"
+                    type="text"
+                    id="providerInput"
+                    name="provider"
+                    placeholder="e.g. Saudi German Hospital"
+                    autocomplete="off"
+                  />
+                  <ul class="autocomplete-list" id="providerSuggestions" role="listbox"></ul>
+                  <div class="field__error" id="providerError"></div>
+                </div>
+
+                <div class="field field--full">
+                  <label class="field__label" for="patientInput">
+                    Patient name <span class="field__required">*</span>
+                  </label>
+                  <input
+                    class="field__control"
+                    type="text"
+                    id="patientInput"
+                    name="patientName"
+                    placeholder=""
+                  />
+                  <div class="field__error" id="patientError"></div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <div class="form-section__title">Policy identifiers</div>
+
+                <div class="field field--full">
+                  <label class="field__label" for="companyInput">
+                    Company <span class="field__required">*</span>
+                  </label>
+                  <input
+                    class="field__control"
+                    type="text"
+                    id="companyInput"
+                    name="company"
+                    placeholder="e.g. IBS - METLIFE"
+                    autocomplete="off"
+                  />
+                  <div class="field__error" id="companyError"></div>
+                </div>
+
+                <div class="field-grid">
+                  <div class="field">
+                    <label class="field__label" for="grpInput">
+                      Group policy no. (GRP) <span class="field__required">*</span>
+                    </label>
+                    <input
+                      class="field__control"
+                      type="text"
+                      id="grpInput"
+                      name="grp"
+                      placeholder="**********"
+                      inputmode="numeric"
+                      pattern="\d*"
+                      maxlength="10"
+                    />
+                    <div class="field__error" id="grpError"></div>
+                  </div>
+
+                  <div class="field">
+                    <label class="field__label" for="crtInput">
+                      Certificate no. (CRT) <span class="field__required">*</span>
+                    </label>
+                    <input
+                      class="field__control"
+                      type="text"
+                      id="crtInput"
+                      name="crt"
+                      placeholder="*****"
+                      inputmode="numeric"
+                      pattern="\d*"
+                    />
+                    <div class="field__error" id="crtError"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <div class="form-section__title">Delivery</div>
+
+                <div class="field field--full">
+                  <label class="field__label" for="emailInput">
+                    Customer email <span class="field__required">*</span>
+                  </label>
+                  <input
+                    class="field__control"
+                    type="email"
+                    id="emailInput"
+                    name="email"
+                    placeholder="agent@metlife-provider.com"
+                  />
+                  <div class="field__error" id="emailError"></div>
+                </div>
+
+                <div class="field field--full">
+                  <label class="field__label" for="notesInput">Notes (optional)</label>
+                  <textarea
+                    class="field__control"
+                    id="notesInput"
+                    name="notes"
+                    rows="3"
+                    placeholder="Anything the reviewer should know about this cover letter…"
+                  ></textarea>
+                </div>
+
+                <div class="field field--full">
+                  <label class="field__label" for="templateSelect">Email template</label>
+                  <select class="field__control" id="templateSelect" name="template">
+                    <option value="">Loading templates…</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn btn--secondary" type="reset" id="clearFormBtn">Clear</button>
+                <button class="btn btn--primary" type="button" id="generatePdfBtn">
+                  Generate PDF
+                </button>
+                <button class="btn btn--secondary" type="button" id="downloadPdfBtn" disabled title="Generate a PDF first">
+                  Save PDF
+                </button>
+                <button class="btn btn--accent" type="button" id="sendEmailBtn" disabled title="Generate a PDF first">
+                  Send Email
+                </button>
+              </div>
+              <p class="action-feedback" id="actionFeedback" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- --------------------------- PREVIEW PANEL -------------------------- -->
+      <section class="panel panel--preview" aria-labelledby="previewPanelTitle">
+        <div class="panel__header">
+          <div>
+            <div class="panel__eyebrow">Step 2</div>
+            <h2 class="panel__title" id="previewPanelTitle">Live preview</h2>
+          </div>
+          <div class="preview-toolbar">
+            <button class="preview-toolbar__fit-btn" id="fitZoomBtn" type="button">Fit to width</button>
+            <div class="preview-toolbar__zoom">
+              <button class="preview-toolbar__zoom-btn" id="zoomOutBtn" type="button" aria-label="Zoom out">–</button>
+              <span class="preview-toolbar__zoom-value" id="zoomValue">100%</span>
+              <button class="preview-toolbar__zoom-btn" id="zoomInBtn" type="button" aria-label="Zoom in">+</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="preview-stage" id="previewStage">
+          <div class="paper" id="paper">
+
+            <!-- Empty state shown until the agent starts entering data -->
+            <div class="preview-empty" id="previewEmpty">
+              <div class="preview-empty__icon" aria-hidden="true">✎</div>
+              <div class="preview-empty__title">Nothing to preview yet</div>
+              <p class="preview-empty__body">
+                Start typing in the form, or paste a customer record on the left.
+                The cover letter will build itself here as you go.
+              </p>
+            </div>
+
+            <!-- Cover letter content, filled and revealed by js/preview.js -->
+            <div id="coverLetterContent" hidden>
+
+              <!-- ==================================================
+                   HEADER — now a single image banner (matching the
+                   real letter's actual graphic header) instead of a
+                   coded logo + address text block. See
+                   css/preview.css's ".cl-header" comment for the
+                   superseded text-based version kept as a reference.
+                   ================================================== -->
+              <div class="cl-header">
+                <img
+                  class="cl-header__banner"
+                  id="letterHeaderImg"
+                  src="assets/images/letter-header.png"
+                  alt="MetLife, Life Insurance Company — 75, Road 90, 5th Settlement, New Cairo, Cairo, Egypt. Tel (202) 2461 6500, Fax (202) 2810 4552"
+                />
+              </div>
+
+              <div class="cl-body">
+                <div class="cl-line cl-line--center">الساده / <span id="previewProvider" class="cl-line--placeholder">—</span></div>
+                <div class="cl-line ">تحية طيبة و بعد،،،</div>
+                <div class="cl-line">برجاء الآحاطه بأن / <span id="previewPatient" class="cl-line--placeholder">—</span></div>
+                <div class="cl-line">
+                  مغطى طبيا و تامينياً من قبل شركه متلايف الطبيه لذالك برجاء تقديم الخدمه الطبيه للمريض مع
+                 <p> عدم تحصيل أى أتعاب نقداً عدا الاستثناءات الغير مغطاه . </p>
+                </div>
+
+                <table class="cl-table">
+                  <tbody>
+                    <tr>
+                      <td class="cl-table__label">رقم الوثيقة الجماعي</td>
+                      <td class="cl-table__colon">:</td>
+                      <td class="cl-table__value" id="previewGrp">—</td>
+                    </tr>
+                    <tr>
+                      <td class="cl-table__label">رقم الوثيقة الفردى</td>
+                      <td class="cl-table__colon">:</td>
+                      <td class="cl-table__value" id="previewCrt">—</td>
+                    </tr>
+                    <tr>
+                      <td class="cl-table__label">الشركة</td>
+                      <td class="cl-table__colon">:</td>
+                      <td class="cl-table__value" id="previewCompany">—</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- cl-note__body reserves the template's blank-notes height
+                     while growing naturally for longer text — see
+                     .cl-note__body in preview.css. -->
+                <div class="cl-note">
+                  <span class="cl-note__label">ملحوظة هامه</span> :
+                  <div class="cl-note__body">
+                    <span id="previewNotes" class="cl-line--placeholder">
+
+                    </span>
+                  </div>
+                </div>
+
+                <div class="cl-disclaimer">
+                  هذا الخطاب لا يسمح بدخول المستشفى كمريض داخلى ماعدا حالات الطورائ مغطاه ولا تحتاج الى موافقه مسبقه، مع الافاده عن حالة
+                <p> المريض الصحيه فور دخوله المستشفى. </p>
+                </div>
+              </div>
+
+              <div class="cl-stamp" id="previewStamp">
+                 <img
+                     class="cl-stamp__image"
+                     src="assets/images/claims-stamp.png.png"
+                     alt="Claims Department stamp"
+                  />
+
+                  <div class="cl-stamp__date" id="previewStampDate">—</div>
+                 </div>
+
+              <!-- ==================================================
+                   FOOTER — now a single image banner (the real legal
+                   text graphic) instead of coded Arabic text. See
+                   css/preview.css's ".cl-footer" comment for the
+                   superseded text-based version kept as a reference.
+                   ================================================== -->
+              <div class="cl-footer">
+                <img
+                  class="cl-footer__banner"
+                  id="letterFooterImg"
+                  src="assets/images/letter-footer.png"
+                  alt="MetLife legal and regulatory disclosure footer"
+                />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ============================ STATUS BAR ============================ -->
+    <footer class="statusbar">
+      <div class="statusbar__state">
+        <span class="statusbar__dot statusbar__dot--ready" id="statusDot" aria-hidden="true"></span>
+        <span id="statusLabel">Ready</span>
+      </div>
+      <div class="statusbar__steps">
+        <span class="statusbar__step statusbar__step--active" id="stepReady">Ready</span>
+        <span class="statusbar__step" id="stepPdf">PDF Generated</span>
+        <span class="statusbar__step" id="stepEmail">Email Prepared</span>
+        <span class="statusbar__step" id="stepDone">Completed</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Configuration layer — must load before any module that reads
+       window.MLConfig. pdf-config.js reuses email-config.js's attachment
+       template, so email-config.js must load first. Same load order as
+       the original Electron app. -->
+  <script src="config/build-info.js"></script>
+  <script src="config/app-config.js"></script>
+  <script src="config/email-config.js"></script>
+  <script src="config/pdf-config.js"></script>
+
+  <script src="js/utils.js"></script>
+  <script src="js/validation.js"></script>
+  <script src="js/stamp.js"></script>
+  <script src="js/preview.js"></script>
+  <script src="js/parser.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/pdf.js"></script>
+  <script src="js/email.js"></script>
+  <script src="js/templates.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

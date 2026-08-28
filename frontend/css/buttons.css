@@ -1,0 +1,172 @@
+/* ==========================================================================
+   buttons.css
+   Reusable button variants. Every clickable action in the app uses one of
+   these classes rather than one-off styles.
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3) var(--sp-5);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-standard),
+              border-color var(--dur-fast) var(--ease-standard),
+              color var(--dur-fast) var(--ease-standard),
+              transform var(--dur-fast) var(--ease-standard);
+  white-space: nowrap;
+  position: relative;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* -- Primary: main call to action (Generate PDF, Send Email) -- */
+.btn--primary {
+  background: var(--ml-navy-700);
+  color: var(--ml-text-on-brand);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--ml-navy-600);
+}
+
+/* -- Accent: teal, for the parse / smart actions -- */
+.btn--accent {
+  background: var(--ml-teal-500);
+  color: #fff;
+}
+
+.btn--accent:hover:not(:disabled) {
+  background: #0091B0;
+}
+
+/* -- Secondary: outlined, quiet actions -- */
+.btn--secondary {
+  background: var(--ml-surface);
+  border-color: var(--ml-border-strong);
+  color: var(--ml-text-900);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  border-color: var(--ml-teal-500);
+  color: var(--ml-navy-700);
+}
+
+/* -- Ghost: no border, minimal footprint -- */
+.btn--ghost {
+  background: transparent;
+  color: var(--ml-text-600);
+}
+
+.btn--ghost:hover:not(:disabled) {
+  background: var(--ml-surface-alt);
+  color: var(--ml-navy-900);
+}
+
+/* -- Danger: destructive actions (clear draft) -- */
+.btn--danger {
+  background: transparent;
+  color: var(--ml-danger);
+}
+
+.btn--danger:hover:not(:disabled) {
+  background: var(--ml-danger-bg);
+}
+
+/* -- Sizes -- */
+.btn--sm {
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-xs);
+}
+
+.btn--block {
+  width: 100%;
+}
+
+/* -- Icon-only -- */
+.btn--icon {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: var(--radius-sm);
+}
+
+/* -- Button row -- */
+.btn-row {
+  display: flex;
+  gap: var(--sp-3);
+  margin-top: var(--sp-6);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--ml-border);
+}
+
+/* -- Loading state: spinner replaces the label, button stays disabled -- */
+.btn--loading {
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.btn--loading::after {
+  content: '';
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  top: 50%;
+  left: 50%;
+  margin: -7.5px 0 0 -7.5px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  animation: btn-spin 0.7s linear infinite;
+}
+
+.btn--secondary.btn--loading::after {
+  border: 2px solid rgba(18, 60, 130, 0.25);
+  border-top-color: var(--ml-navy-700);
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* -- Action feedback: inline result of Generate PDF / Send Email -- */
+.action-feedback {
+  font-size: var(--fs-xs);
+  line-height: 1.6;
+  margin-top: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  display: none;
+}
+
+.action-feedback[data-tone="success"] {
+  display: block;
+  color: var(--ml-success);
+  background: var(--ml-success-bg);
+}
+
+.action-feedback[data-tone="error"] {
+  display: block;
+  color: var(--ml-danger);
+  background: var(--ml-danger-bg);
+}
+
+.action-feedback[data-tone="info"] {
+  display: block;
+  color: var(--ml-navy-700);
+  background: var(--ml-info-bg);
+}

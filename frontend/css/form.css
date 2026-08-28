@@ -1,0 +1,269 @@
+/* ==========================================================================
+   form.css
+   Data entry panel: mode switcher, quick-paste textarea, manual fields.
+   ========================================================================== */
+
+/* -- Mode switcher (Quick Paste / Manual Entry) -- */
+.mode-switch {
+  display: flex;
+  background: var(--ml-surface-alt);
+  border: 1px solid var(--ml-border);
+  border-radius: var(--radius-md);
+  padding: var(--sp-1);
+  gap: var(--sp-1);
+}
+
+.mode-switch__btn {
+  flex: 1 1 0;
+  border: none;
+  background: transparent;
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--ml-text-600);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-standard),
+              color var(--dur-fast) var(--ease-standard);
+}
+
+.mode-switch__btn:hover {
+  color: var(--ml-navy-900);
+}
+
+.mode-switch__btn[aria-selected="true"] {
+  background: var(--ml-surface);
+  color: var(--ml-navy-700);
+  box-shadow: var(--shadow-sm);
+}
+
+/* -- Form sections -- */
+.form-section {
+  margin-top: var(--sp-4);
+}
+
+.form-section:first-child {
+  margin-top: 0;
+}
+
+.form-section__title {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--ml-text-900);
+  margin-bottom: var(--sp-1);
+}
+
+.form-section__hint {
+  font-size: var(--fs-xs);
+  color: var(--ml-text-400);
+  margin-bottom: var(--sp-3);
+}
+
+/* -- Quick paste -- */
+.paste-area {
+  width: 100%;
+  min-height: 160px;
+  resize: vertical;
+  border: 1.5px dashed var(--ml-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--ml-surface-alt);
+  padding: var(--sp-4);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  color: var(--ml-text-900);
+  transition: border-color var(--dur-base) var(--ease-standard),
+              background var(--dur-base) var(--ease-standard);
+}
+
+.paste-area::placeholder {
+  color: var(--ml-text-400);
+  font-family: var(--font-ui);
+}
+
+.paste-area:hover {
+  border-color: var(--ml-teal-500);
+}
+
+.paste-area:focus-visible {
+  border-color: var(--ml-teal-500);
+  background: var(--ml-surface);
+  box-shadow: var(--shadow-focus);
+}
+
+/* Dragging text over the paste area reuses the same focus treatment,
+   so the affordance is consistent rather than a one-off style. */
+.paste-area[data-dragover="true"] {
+  border-color: var(--ml-teal-500);
+  background: var(--ml-surface);
+  box-shadow: var(--shadow-focus);
+}
+
+.paste-area__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--sp-3);
+}
+
+.paste-area__buttons {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.paste-area__count {
+  font-size: var(--fs-xs);
+  color: var(--ml-text-400);
+}
+
+/* -- Parse report: one line per field, ✔ detected / ⚠ missing -- */
+.parse-report {
+  list-style: none;
+  margin: var(--sp-4) 0 0;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--ml-surface-alt);
+  border: 1px solid var(--ml-border);
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.parse-report__item {
+  font-size: var(--fs-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.parse-report__item--ok {
+  color: var(--ml-success);
+}
+
+.parse-report__item--warn {
+  color: var(--ml-warning);
+}
+
+/* -- Field grid -- */
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  margin-bottom: var(--sp-2);
+  position: relative;
+}
+
+.field--full {
+  grid-column: 1 / -1;
+}
+
+.field__label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  color: var(--ml-text-600);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+.field__required {
+  color: var(--ml-danger);
+}
+
+.field__control {
+  border: 1px solid var(--ml-border-strong);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-base);
+  color: var(--ml-text-900);
+  background: var(--ml-surface);
+  transition: border-color var(--dur-fast) var(--ease-standard),
+              box-shadow var(--dur-fast) var(--ease-standard);
+  width: 100%;
+}
+
+.field__control::placeholder {
+  color: var(--ml-text-400);
+}
+
+.field__control:hover {
+  border-color: var(--ml-border-strong);
+}
+
+.field__control:focus-visible {
+  border-color: var(--ml-teal-500);
+  box-shadow: var(--shadow-focus);
+}
+
+.field__control[data-state="valid"] {
+  border-color: var(--ml-success);
+}
+
+.field__control[data-state="invalid"] {
+  border-color: var(--ml-danger);
+}
+
+.field__error {
+  font-size: var(--fs-xs);
+  color: var(--ml-danger);
+  min-height: 0;
+}
+
+textarea.field__control {
+  resize: vertical;
+  min-height: 84px;
+  font-family: var(--font-ui);
+  line-height: 1.5;
+}
+
+/* -- Autocomplete (providers) -- */
+.autocomplete-list {
+  position: absolute;
+  inset-inline: 0;
+  top: calc(100% + 4px);
+  background: var(--ml-surface);
+  border: 1px solid var(--ml-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  z-index: 20;
+  max-height: 180px;
+  overflow-y: auto;
+  display: none;
+}
+
+.autocomplete-list[data-open="true"] {
+  display: block;
+}
+
+.autocomplete-list__item {
+  padding: var(--sp-2) var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--ml-text-900);
+  cursor: pointer;
+}
+
+.autocomplete-list__item:hover,
+.autocomplete-list__item[data-active="true"] {
+  background: var(--ml-teal-100);
+}
+
+/* -- Empty / draft banner -- */
+.draft-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  background: var(--ml-info-bg);
+  border: 1px solid var(--ml-teal-500);
+  border-radius: var(--radius-md);
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--fs-xs);
+  color: var(--ml-navy-900);
+  margin-bottom: var(--sp-5);
+}

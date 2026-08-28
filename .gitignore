@@ -1,0 +1,9 @@
+node_modules/
+*.log
+.env
+.DS_Store
+Thumbs.db
+
+# Generated/runtime artifacts — nothing here is meant to be committed
+backend/generated/
+helper/temp/

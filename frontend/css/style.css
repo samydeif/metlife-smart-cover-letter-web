@@ -1,0 +1,301 @@
+/* ==========================================================================
+   style.css
+   Global reset + application shell (topbar, split workspace, status bar).
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: var(--fs-base);
+  color: var(--ml-text-900);
+  background: var(--ml-bg);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden; /* app shell owns scrolling per-panel, not the window */
+}
+
+h1, h2, h3, h4, p {
+  margin: 0;
+}
+
+button {
+  font-family: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* The global img{display:block} reset above (any author-stylesheet rule,
+   regardless of specificity) beats the browser's built-in
+   `[hidden] { display: none }` rule. Without this, an <img> that
+   js/app.js#wireLogoFallback() has correctly marked `hidden` after a
+   failed load still renders as a broken-image glyph. This restores the
+   native hidden behavior for images specifically. */
+img[hidden] {
+  display: none;
+}
+
+::selection {
+  background: var(--ml-teal-100);
+  color: var(--ml-navy-900);
+}
+
+/* Visible keyboard focus everywhere — WCAG 2.4.7 */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+  border-radius: var(--radius-sm);
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ---- App shell ---- */
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* -- Top bar -- */
+.topbar {
+  height: var(--topbar-h);
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--sp-6);
+  background: var(--ml-surface);
+  border-bottom: 1px solid var(--ml-border);
+  -webkit-app-region: drag; /* Electron: lets the window be dragged from here */
+}
+
+.topbar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+/* Logo: real asset when present, gradient-monogram fallback when not.
+   See js/app.js#wireLogoFallback — the <img> onerror swap is handled
+   there rather than inline, so this stylesheet only owns appearance. */
+.topbar__logo-wrap {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.topbar__logo-img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+}
+
+.topbar__logo-fallback {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--ml-navy-700), var(--ml-teal-500));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-sm);
+}
+
+.topbar__title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--ml-navy-900);
+  letter-spacing: -0.01em;
+}
+
+.topbar__subtitle {
+  font-size: var(--fs-xs);
+  color: var(--ml-text-400);
+  margin-inline-start: var(--sp-2);
+}
+
+.topbar__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  -webkit-app-region: no-drag;
+}
+
+.topbar__badge {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  color: var(--ml-text-600);
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--radius-full);
+  background: var(--ml-surface-alt);
+  border: 1px solid var(--ml-border);
+}
+
+/* -- Workspace: split layout (30 / 70) -- */
+.workspace {
+  flex: 1 1 auto;
+  display: flex;
+  min-height: 0; /* allow children to scroll instead of overflowing */
+  padding: var(--panel-gap);
+  gap: var(--panel-gap);
+}
+
+.panel {
+  background: var(--ml-surface);
+  border: 1px solid var(--ml-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.panel--form {
+  flex: 0 0 390px;
+  width: 390px;
+  max-width: 390px;
+  min-width: 390px;
+}
+
+.panel--preview {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.panel__header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-5) var(--sp-6);
+  border-bottom: 1px solid var(--ml-border);
+}
+
+.panel__eyebrow {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--ml-teal-500);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: var(--sp-1);
+}
+
+.panel__title {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--ml-navy-900);
+}
+
+.panel__body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: var(--sp-6);
+}
+
+/* -- Status bar -- */
+.statusbar {
+  height: var(--statusbar-h);
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--sp-6);
+  background: var(--ml-surface);
+  border-top: 1px solid var(--ml-border);
+  font-size: var(--fs-xs);
+  color: var(--ml-text-600);
+}
+
+.statusbar__state {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.statusbar__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ml-text-400);
+  transition: background var(--dur-base) var(--ease-standard);
+}
+
+.statusbar__dot--ready { background: var(--ml-text-400); }
+.statusbar__dot--progress { background: var(--ml-warning); animation: pulse 1.1s ease-in-out infinite; }
+.statusbar__dot--success { background: var(--ml-success); }
+.statusbar__dot--error { background: var(--ml-danger); }
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.statusbar__steps {
+  display: flex;
+  gap: var(--sp-5);
+}
+
+.statusbar__step {
+  color: var(--ml-text-400);
+  position: relative;
+  padding-inline-start: var(--sp-4);
+}
+
+.statusbar__step::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ml-border-strong);
+}
+
+.statusbar__step--active {
+  color: var(--ml-navy-700);
+  font-weight: var(--fw-medium);
+}
+
+.statusbar__step--active::before {
+  background: var(--ml-teal-500);
+}
+
+.statusbar__step--done {
+  color: var(--ml-success);
+}
+
+.statusbar__step--done::before {
+  background: var(--ml-success);
+}
+
+/* Utility */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

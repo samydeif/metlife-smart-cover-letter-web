@@ -1,0 +1,22 @@
+{
+  "name": "metlife-smart-cover-letter-backend",
+  "version": "1.0.0",
+  "description": "Internal web backend for MetLife Smart Cover Letter — serves the frontend, generates PDFs server-side (Playwright), and resolves email templates (Excel-derived or default config).",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "postinstall": "echo \"NOTE: run 'npx playwright install chromium' once, on a machine with internet access, before starting the server. See README.md.\""
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "playwright": "^1.47.0",
+    "exceljs": "^4.4.0",
+    "dotenv": "^16.4.5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
